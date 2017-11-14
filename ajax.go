@@ -16,6 +16,12 @@ func templatehandler(w http.ResponseWriter, r *http.Request){
 
 	t.Execute(w, &m)
 
+	r.ParseForm()
+
+	//User input messages
+
+	fmt.Println(r.Form["userInput"])
+
 }
 
 func userinputhandler(w http.ResponseWriter, r *http.Request) {
