@@ -58,29 +58,9 @@ func userinputhandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Eliza(input string) string {
-	// send it in
-	// process regex
-	// do complicated stuff
-	// return answer
-
-/*	pattern := "name is (.*)"
-	likePattern := "I like (.*)"
-
-	re := regexp.MustCompile(pattern)
-
-	if re.MatchString(input) { // the input and regular expression match.
-		match := re.FindStringSubmatch(input)
-		name := match[1]
-		return "Hello " + name + " it's nice to meet you."
-	}
-	re = regexp.MustCompile(likePattern)
-	if re.MatchString(input) { // the input and regular expression match.
-		match := re.FindStringSubmatch(input)
-		like := match[1]
-		return "Why do you like " + like + "?"
-	}
-*/
-	return "And how does that make you feel?"
+	//Code will be here for elizas responses
+	
+	return "Elizas response"
 }
 
 func main() {
