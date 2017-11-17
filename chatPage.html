@@ -19,9 +19,10 @@ Abigail Culkin
     <a class="navbar-brand" href="#">Eliza</a>
   </nav>
   <div class="container-fluid" id="chat">
+    {{.Message}}
   <ul class="list-group">
-  <li class="list-group-item list-group-item-secondary" >Hi I am Eliza, Want to talk?</li> <!-- Different colour for eliza-->
-	<li class="list-group-item"  >{{.Chat}}</li>
+  <li class="list-group-item list-group-item-secondary"  >Hi I am Eliza, Want to talk?</li> <!-- Different colour for eliza-->
+	<li class="list-group-item" id="yourInput"  ></li>
 </ul>
 </div>
 
@@ -30,9 +31,9 @@ Abigail Culkin
   <div class="fixed-bottom">
 	<div class="container-fluid">
     <input name="userInput" type="text" class="form-control" id="userInput" aria-describedby="emailHelp" placeholder="Talk to Eliza">
-  </form>
 </div>
 </div>
+</form>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -41,17 +42,37 @@ Abigail Culkin
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
  
 <script>
-$("userInput").keyPress(function (e) {});
+/*$("userInput").keyPress(function (e) {});*/
 
-$("#user-input-form").submit(
-        function(event) {
-          event.preventDefault();
-          $.get('/user-input', { value: $('#user-input').val() } )
-            .done(function (data) {
-              $('#output-area').val(data);
-            })
+const form = $("#userInput");
+const list = $("#yourInput");
+
+form.keypress(function(event){
+    if(event.keyCode != 13){ // ENTER
+        return;
+    }
+
+    event.preventDefault(); // don't refresh the page.
+
+    const yourInput = form.val(); // get the text from the input form
+    form.val(" "); // wipes the text box.
+    
+    // before you send request, make sure the user input is valid i.e. not all empty.
+    list.append("<li class='list-group-item list-group-item'>"+"You : " + yourInput + "</li>");
+
+    // GET/POST
+    const queryParams = {"userInput" : yourInput }
+    $.get("/chat", queryParams)
+        .done(function(response){
+            const elizaResp = "<li class='list-group-item list-secondary' >"+"ELiza : " + response + "</li>";
+            setTimeout(function(){
+                list.append(elizaResp)
+            }, 1000);//set timeout to give wait to response
+        }).fail(function(){
+            const elizaResp = "<li class='list-group-item list-group-item-secondary' >Not Here</li>";
+            list.append(elizaResp);
         });
-        
+});
 </script>
  </body>
 </html>

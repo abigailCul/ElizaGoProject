@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"html/template"
-	"log"
+	//"log"
 )
 type Chat struct{
 	Message string
@@ -36,36 +36,55 @@ func templatehandler(w http.ResponseWriter, r *http.Request){
 
 func userinputhandler(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w, "Hello, %s!", r.URL.Query().Get("value")) //.Path[1:])
-	m := Chat{Message: ""}
+/*	m := Chat{Message: ""}
 	
 		t, _ := template.ParseFiles("chatPage.html")
 	
     // checking for guess URL encoded variable
-    userInput, err := r.URL.Query()["userInput"]
+    userInput := r.URL.Query().Get("userInput")
     // if not found execute the template and exit
-    if !err || len(userInput) < 1 {
+    if  len(userInput) < 1 {
         log.Println("Url Param 'guess' is missing")
         // execute the template with the message
         t.Execute(w, m)
         return
-    }// if
+	}// if*/
+	
+	userinput := r.URL.Query().Get("userInput")
+	reply := Eliza(userinput)
+	fmt.Fprintf(w, reply)
     
-    // Query()["guess"] will return an array of items,
-    // we only want the single item.
-    str := userInput[0]
-    
-    //str = str + "</br>" + input.Input
-    
-    // adding the guess value to the template
-    m = Chat{Message: "" + str}
 
+}
+
+func Eliza(input string) string {
+	// send it in
+	// process regex
+	// do complicated stuff
+	// return answer
+
+/*	pattern := "name is (.*)"
+	likePattern := "I like (.*)"
+
+	re := regexp.MustCompile(pattern)
+
+	if re.MatchString(input) { // the input and regular expression match.
+		match := re.FindStringSubmatch(input)
+		name := match[1]
+		return "Hello " + name + " it's nice to meet you."
+	}
+	re = regexp.MustCompile(likePattern)
+	if re.MatchString(input) { // the input and regular expression match.
+		match := re.FindStringSubmatch(input)
+		like := match[1]
+		return "Why do you like " + like + "?"
+	}
+*/
+	return "And how does that make you feel?"
 }
 
 func main() {
 
-	// Adapted from: http://www.alexedwards.net/blog/serving-static-sites-with-go
-	//fs:=  http.FileServer(http.Dir("chatPage"))
-	//http.HandleFunc("/", userinputhandler)
 	http.HandleFunc("/", templatehandler)
 
 	http.HandleFunc("/chatPage", userinputhandler)
