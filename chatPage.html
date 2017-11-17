@@ -47,17 +47,19 @@ Abigail Culkin
 const form = $("#userInput");
 const list = $("#yourInput");
 
+//Key function press enter to send your message
 form.keypress(function(event){
-    if(event.keyCode != 13){ // ENTER
+    if(event.keyCode != 13){ 
         return;
     }
 
-    event.preventDefault(); // don't refresh the page.
+    event.preventDefault(); // Wont refresh
 
-    const yourInput = form.val(); // get the text from the input form
-    form.val(" "); // wipes the text box.
+    const yourInput = form.val(); // get the text from the input form and will clear your input box
+    form.val(" "); 
     
-    // before you send request, make sure the user input is valid i.e. not all empty.
+    // Your input message will appear on the screen
+    //Will see your message as You:
     list.append("<li class='list-group-item list-group-item'>"+"You : " + yourInput + "</li>");
 
     // GET/POST
@@ -67,7 +69,7 @@ form.keypress(function(event){
             const elizaResp = "<li class='list-group-item list-secondary' >"+"ELiza : " + response + "</li>";
             setTimeout(function(){
                 list.append(elizaResp)
-            }, 1000);//set timeout to give wait to response
+            }, 1000);
         }).fail(function(){
             const elizaResp = "<li class='list-group-item list-group-item-secondary' >Not Here</li>";
             list.append(elizaResp);

@@ -10,15 +10,18 @@ import (
 	"net/http"
 	"html/template"
 	//"log"
+	"regexp"
+	"math/rand"
+"time"
 )
 type Chat struct{
 	Message string
 }
-// template message struct
-/*type input struct {
-    Input string
-}// message_struct*/
-
+var responses = []string{
+	"I’m not sure what you’re trying to say. Could you explain it to me?",
+	"How does that make you feel?",
+	"Why do you say that?",
+  }
 func templatehandler(w http.ResponseWriter, r *http.Request){
 
 	m := Chat{Message: ""}
@@ -36,7 +39,9 @@ func templatehandler(w http.ResponseWriter, r *http.Request){
 
 func userinputhandler(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w, "Hello, %s!", r.URL.Query().Get("value")) //.Path[1:])
-/*	m := Chat{Message: ""}
+
+//Previous tries to get my user input
+	/*	m := Chat{Message: ""}
 	
 		t, _ := template.ParseFiles("chatPage.html")
 	
@@ -58,12 +63,63 @@ func userinputhandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Eliza(input string) string {
+	if matched, _ := regexp.MatchString(`(?i).*\bfather\b.*`, input); matched{
+		return "Why dont you tell me about your Father?"
+		}
+		//(?i) case insensitive
+
+		if matched, _ := regexp.MatchString(`(?i).*\bmother\b.*`, input); matched{
+			return "Why dont you tell me about your mother?"
+			}
+   
+	  re := regexp.MustCompile("I am ([^.!?]*)[.!?]?")
+	   if re.MatchString(input){
+	 
+	  return re.ReplaceAllString(input, "How do you know you are $1?")
+   
+	   }
+
+	   pattern := "name is (.*)"
+
+	   rep := regexp.MustCompile(pattern)
+
+	   if rep.MatchString(input) { // the input and regular expression match.
+		match := rep.FindStringSubmatch(input)
+		name := match[1]
+		return "Hello " + name + " it's nice to meet you."
+	}
+
+	res := regexp.MustCompile("I really like ([^.!?]*)[.!?]?")
+	if res.MatchString(input){
+  
+   return res.ReplaceAllString(input, "Why do you really like $1?")
+
+	}
+
 	//Code will be here for elizas responses
-	
-	return "Elizas response"
+/*pattern := "name is (.*)"
+	likePattern := "I like (.*)"
+
+	re := regexp.MustCompile(pattern)
+
+	if re.MatchString(input) { // the input and regular expression match.
+		match := re.FindStringSubmatch(input)
+		name := match[1]
+		return "Hello " + name + " it's nice to meet you."
+	}
+	re = regexp.MustCompile(likePattern)
+	if re.MatchString(input) { // the input and regular expression match.
+		match := re.FindStringSubmatch(input)
+		like := match[1]
+		return "Why do you like " + like + "?"
+	}
+
+return "And how does that make you feel?"*/
+	return responses[rand.Intn(len(responses))]
 }
 
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
 
 	http.HandleFunc("/", templatehandler)
 
