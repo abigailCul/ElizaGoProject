@@ -63,17 +63,17 @@ form.keypress(function(event){
     list.append("<li class='list-group-item list-group-item'>"+"You : " + yourInput + "</li>");
 
     // GET/POST
-    const queryParams = {"userInput" : yourInput }
-    $.get("/chat", queryParams)
+   /* const queryParams = {"userInput" : yourInput }
+    jQuery.get("/Chat", queryParams)
         .done(function(response){
-            const elizaResp = "<li class='list-group-item list-secondary' >"+"ELiza : " + response + "</li>";
+            const elizaResp = "<li class='list-group-item list-secondary' >"+"ELiza : " + elizaResp + "</li>";
             setTimeout(function(){
                 list.append(elizaResp)
             }, 1000);
         }).fail(function(){
             const elizaResp = "<li class='list-group-item list-group-item-secondary' >Not Here</li>";
             list.append(elizaResp);
-        });
+        });*/
 });
 </script>
  </body>
