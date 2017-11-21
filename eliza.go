@@ -13,6 +13,8 @@ import (
 	"regexp"
 	"math/rand"
 "time"
+"io"
+
 )
 type Chat struct{
 	Message string
@@ -23,6 +25,7 @@ var response = []string{
 	"Why do you say that?",
   }
 func templatehandler(w http.ResponseWriter, r *http.Request){
+	//fmt.Println("input:", r.URL.Query()); 
 
 	m := Chat{Message: ""}
 
@@ -34,39 +37,21 @@ func templatehandler(w http.ResponseWriter, r *http.Request){
 
 	//User input messages 
 	//fmt.Println(r.Form["userInput"])
+	io.WriteString(w, "Eliza: "+ r.FormValue("userInput"))
 
-	userinput := r.URL.Query().Get("userInput")
-	reply := Eliza(userinput)
-	fmt.Fprintf(w, reply)
+
+		input := r.URL.Query().Get("input")
+        out := Eliza(input)
+		fmt.Fprintf(w, out)
+
+		fmt.Println("User: "+ input)
+		fmt.Println("Bot: "+out+"\n")
 
   }// handler
-
-func userinputhandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Fprintf(w, "Hello, %s!", r.URL.Query().Get("value")) //.Path[1:])
-
-//Previous tries to get my user input
-	/*	m := Chat{Message: ""}
-	
-		t, _ := template.ParseFiles("chatPage.html")
-	
-    // checking for guess URL encoded variable
-    userInput := r.URL.Query().Get("userInput")
-    // if not found execute the template and exit
-    if  len(userInput) < 1 {
-        log.Println("Url Param 'guess' is missing")
-        // execute the template with the message
-        t.Execute(w, m)
-        return
-	}// if*/
-	
-/*	userinput := r.URL.Query().Get("userInput")
-	reply := Eliza(userinput)
-	fmt.Fprintf(w, reply)
-	
-	fmt.Printf(userinput)*/
-}
+  
 
 func Eliza(input string) string {
+	
 	if matched, _ := regexp.MatchString(`(?i).*\bfather\b.*`, input); matched{
 		return "Why dont you tell me about your Father?"
 		}
@@ -99,21 +84,26 @@ func Eliza(input string) string {
    return res.ReplaceAllString(input, "Why do you really like $1?")
 
 	}
-	//fmt.Println()
 	return response[rand.Intn(len(response))]
-	
-	//fmt.Println(Eliza( response[rand.Intn(len(response))])
 
 }
 
 func main() {
-	
-	//fmt.Println(Eliza( response[rand.Intn(len(response))])
+		
+
+
+//	fmt.Println()
+//	fmt.Println(Eliza(response[rand.Intn(len(response))]))
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	http.HandleFunc("/", templatehandler)
 
-//	http.HandleFunc("/Chat", userinputhandler)
 	http.ListenAndServe(":8080", nil)
 }
+/*func getInput() string {
+    fmt.Print("You: ")
+    reader := bufio.NewReader(os.Stdin)
+    userinput, _ := reader.ReadString('\n')
+    return userinput
+}*/

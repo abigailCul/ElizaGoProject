@@ -19,15 +19,14 @@ Abigail Culkin
     <a class="navbar-brand" href="#">Eliza</a>
   </nav>
   <div class="container-fluid" id="chat">
-    {{.Message}}
   <ul class="list-group">
-  <li class="list-group-item list-group-item-secondary"  >Hi I am Eliza, Want to talk?</li> <!-- Different colour for eliza-->
-	<li class="list-group-item" id="yourInput"  ></li>
+  <li class="list-group-item list-group-item-secondary"  id="responses">Hi I am Eliza, Want to talk?</li> <!-- Different colour for eliza-->
+	<li class="list-group-item" id="output"  ></li>
 </ul>
 </div>
 
   <!-- Wrap text bos in container fluid-->
-  <form action="" >
+  <form method="" action="/" >
   <div class="fixed-bottom">
 	<div class="container-fluid">
     <input name="userInput" type="text" class="form-control" id="userInput" aria-describedby="emailHelp" placeholder="Talk to Eliza">
@@ -45,7 +44,7 @@ Abigail Culkin
 /*$("userInput").keyPress(function (e) {});*/
 
 const form = $("#userInput");
-const list = $("#yourInput");
+const list = $("#output");
 
 //Key function press enter to send your message
 form.keypress(function(event){
@@ -55,25 +54,24 @@ form.keypress(function(event){
 
     event.preventDefault(); // Wont refresh
 
-    const yourInput = form.val(); // get the text from the input form and will clear your input box
+    const userInput = form.val(); // get the text from the input form and will clear your input box
     form.val(" "); 
     
+
+    const userPrompt = {"input" : userInput }
     // Your input message will appear on the screen
     //Will see your message as You:
-    list.append("<li class='list-group-item list-group-item'>"+"You : " + yourInput + "</li>");
+    list.append("<li class='list-group-item list-group-item'>"+"You : " + userInput + "</li>");
 
     // GET/POST
-   /* const queryParams = {"userInput" : yourInput }
-    jQuery.get("/Chat", queryParams)
-        .done(function(response){
-            const elizaResp = "<li class='list-group-item list-secondary' >"+"ELiza : " + elizaResp + "</li>";
+  //const queryParams = {"input" : userInput }
+  $.get("/", userPrompt)
+        .done(responses => {
+            const out = "<li class='list-group-item list-secondary' id='resp' >"+"ELiza : " + responses + "</li>";
             setTimeout(function(){
-                list.append(elizaResp)
+                list.append(out)
             }, 1000);
-        }).fail(function(){
-            const elizaResp = "<li class='list-group-item list-group-item-secondary' >Not Here</li>";
-            list.append(elizaResp);
-        });*/
+        })
 });
 </script>
  </body>
