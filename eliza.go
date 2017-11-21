@@ -8,12 +8,12 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"html/template"
+	//"html/template"
 	//"log"
 	"regexp"
 	"math/rand"
 "time"
-"io"
+//"io"
 
 )
 type Chat struct{
@@ -24,6 +24,17 @@ var response = []string{
 	"How does that make you feel?",
 	"Why do you say that?",
   }
+  
+func userHandler(w http.ResponseWriter, r * http.Request) {
+	
+	
+	
+			input := r.URL.Query().Get("input")
+			out := Eliza(input)
+			fmt.Fprintf(w, out)
+
+} // chatHandler
+/*
 func templatehandler(w http.ResponseWriter, r *http.Request){
 	//fmt.Println("input:", r.URL.Query()); 
 
@@ -37,17 +48,15 @@ func templatehandler(w http.ResponseWriter, r *http.Request){
 
 	//User input messages 
 	//fmt.Println(r.Form["userInput"])
-	io.WriteString(w, "Eliza: "+ r.FormValue("userInput"))
+	io.WriteString(w, "Eliza: "+ r.FormValue("input"))
 
 
 		input := r.URL.Query().Get("input")
         out := Eliza(input)
 		fmt.Fprintf(w, out)
 
-		fmt.Println("User: "+ input)
-		fmt.Println("Bot: "+out+"\n")
-
   }// handler
+  */
   
 
 func Eliza(input string) string {
@@ -61,7 +70,7 @@ func Eliza(input string) string {
 			return "Why dont you tell me about your mother?"
 			}
    
-	  re := regexp.MustCompile("I am ([^.!?]*)[.!?]?")
+	  re := regexp.MustCompile("I am (?i)([^.!?]*)[.!?]?")
 	   if re.MatchString(input){
 	 
 	  return re.ReplaceAllString(input, "How do you know you are $1?")
@@ -97,7 +106,9 @@ func main() {
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	http.HandleFunc("/", templatehandler)
+	//http.HandleFunc("/chat/", templatehandler)
+	http.Handle("/", http.FileServer(http.Dir("./src")))
+	http.HandleFunc("/chat/", userHandler)
 
 	http.ListenAndServe(":8080", nil)
 }

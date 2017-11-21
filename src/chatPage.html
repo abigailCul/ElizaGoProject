@@ -39,40 +39,13 @@ Abigail Culkin
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
- 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="/javaScript/text.js"></script>
 <script>
 /*$("userInput").keyPress(function (e) {});*/
 
-const form = $("#userInput");
-const list = $("#output");
-
-//Key function press enter to send your message
-form.keypress(function(event){
-    if(event.keyCode != 13){ 
-        return;
-    }
-
-    event.preventDefault(); // Wont refresh
-
-    const userInput = form.val(); // get the text from the input form and will clear your input box
-    form.val(" "); 
-    
-
-    const userPrompt = {"input" : userInput }
-    // Your input message will appear on the screen
-    //Will see your message as You:
-    list.append("<li class='list-group-item list-group-item'>"+"You : " + userInput + "</li>");
-
-    // GET/POST
-  //const queryParams = {"input" : userInput }
-  $.get("/", userPrompt)
-        .done(responses => {
-            const out = "<li class='list-group-item list-secondary' id='resp' >"+"ELiza : " + responses + "</li>";
-            setTimeout(function(){
-                list.append(out)
-            }, 1000);
-        })
-});
 </script>
  </body>
 </html>
