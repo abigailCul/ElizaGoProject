@@ -19,102 +19,112 @@ import (
 type Chat struct{
 	Message string
 }
+var Intro = []string{
+    "Hello. How are you feeling today?",
+    "How are you? Do you want to talk",
+    "Is there something bothering you?",
+    "How about we have a little chat?",
+}
+
+  var Help = map[string]string{
+	"am": "are",
+    "was": "were",
+    "i": "you",
+    "i'd": "you would",
+    "i've": "you have",
+    "i'll": "you will",
+    "my": "your",
+    "are": "am",
+    "you've": "I have",
+    "you'll": "I will",
+    "your": "my",
+    "yours": "mine",
+    "you": "me",
+	"me": "you",
+}
+var Bye = []string{
+    "goodbye",
+    "bye",
+    "Please come back and talk soon",
+	"It was nice to talk to you",
+
+}
 var response = []string{
 	"I’m not sure what you’re trying to say. Could you explain it to me?",
 	"How does that make you feel?",
 	"Why do you say that?",
+	"I really like talking to you",
+	"Please tell me more.",
+	"Very interesting.",
   }
+
   
 func userHandler(w http.ResponseWriter, r * http.Request) {
-	
-	
-	
+
 			input := r.URL.Query().Get("input")
 			out := Eliza(input)
 			fmt.Fprintf(w, out)
 
-} // chatHandler
-/*
-func templatehandler(w http.ResponseWriter, r *http.Request){
-	//fmt.Println("input:", r.URL.Query()); 
 
-	m := Chat{Message: ""}
-
-	t, _ := template.ParseFiles("chatPage.html")
-
-	t.Execute(w, m)
-
-	//r.ParseForm()
-
-	//User input messages 
-	//fmt.Println(r.Form["userInput"])
-	io.WriteString(w, "Eliza: "+ r.FormValue("input"))
-
-
-		input := r.URL.Query().Get("input")
-        out := Eliza(input)
-		fmt.Fprintf(w, out)
-
-  }// handler
-  */
+} // Handler
   
 
-func Eliza(input string) string {
+func Eliza(inputMessage string) string {
 	
-	if matched, _ := regexp.MatchString(`(?i).*\bfather\b.*`, input); matched{
+	
+	if matched, _ := regexp.MatchString(`(?i).*\bfather\b.*`, inputMessage); matched{
 		return "Why dont you tell me about your Father?"
 		}
 		//(?i) case insensitive
 
-		if matched, _ := regexp.MatchString(`(?i).*\bmother\b.*`, input); matched{
+		if matched, _ := regexp.MatchString(`(?i).*\bmother\b.*`, inputMessage); matched{
 			return "Why dont you tell me about your mother?"
 			}
    
-	  re := regexp.MustCompile("I am (?i)([^.!?]*)[.!?]?")
-	   if re.MatchString(input){
+	  re := regexp.MustCompile("(?i)I am ([^.!?]*)[.!?]?")
+	   if re.MatchString(inputMessage){
 	 
-	  return re.ReplaceAllString(input, "How do you know you are $1?")
+	  return re.ReplaceAllString(inputMessage, "How do you know you are $1?")
    
 	   }
 
-/*	   pattern := "name is (.*)"
+	   rep := regexp.MustCompile("(?i)I have ([^.!?]*)[.!?]?")
+	   if rep.MatchString(inputMessage){
+	 
+	  return rep.ReplaceAllString(inputMessage, "Why dont you tell me more about your $1?")
+   
+	   }
 
-	   rep := regexp.MustCompile(pattern)
+	   name := regexp.MustCompile("(?i)Hi my name is ([^.!?]*)[.!?]?")
+	   if name.MatchString(inputMessage){
+	 
+	  return name.ReplaceAllString(inputMessage, "Nice to meet you $1!")
+   
+	   }
+	 
 
-	   if rep.MatchString(input) { // the input and regular expression match.
-		match := rep.FindStringSubmatch(input)
-		name := match[1]
-		return "Hello " + name + " it's nice to meet you."
-	}*/
-
-	res := regexp.MustCompile("I really like ([^.!?]*)[.!?]?")
-	if res.MatchString(input){
+	res := regexp.MustCompile("(?i)I really like ([^.!?]*)[.!?]?")
+	if res.MatchString(inputMessage){
   
-   return res.ReplaceAllString(input, "Why do you really like $1?")
+   return res.ReplaceAllString(inputMessage, "Why do you really like $1?")
 
 	}
 	return response[rand.Intn(len(response))]
 
+}//Close Eliza function
+
+func ElizaHi() string {
+    return  Intro[rand.Intn(len(Intro))]
 }
-
+func ElizaBye() string {
+    return  Bye[rand.Intn(len(Bye))]
+}
 func main() {
-		
-
-
-//	fmt.Println()
-//	fmt.Println(Eliza(response[rand.Intn(len(response))]))
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	//http.HandleFunc("/chat/", templatehandler)
 	http.Handle("/", http.FileServer(http.Dir("./src")))
 	http.HandleFunc("/chat/", userHandler)
 
 	http.ListenAndServe(":8080", nil)
 }
-/*func getInput() string {
-    fmt.Print("You: ")
-    reader := bufio.NewReader(os.Stdin)
-    userinput, _ := reader.ReadString('\n')
-    return userinput
-}*/
