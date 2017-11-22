@@ -23,7 +23,7 @@ form.keypress(function(event){
   //const queryParams = {"input" : userInput }
   $.get("/chat/", userPrompt)
         .done(responses => {
-            const out = "<li class='list-group-item list-secondary' id='resp' >"+"ELiza : " + responses +  "</li>";
+            const out = "<li class='list-group-item list-group-item-secondary' id='resp' >"+"ELiza : " + responses +  "</li>";
             setTimeout(function(){
                 list.append(out)
             }, 1000);
