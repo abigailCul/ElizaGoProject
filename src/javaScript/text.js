@@ -1,4 +1,12 @@
 
+/*
+Abigail Culkin
+G00334291
+Ref:
+https://www.reddit.com/r/golang/comments/2tmllh/sending_an_ajax_request_to_go_web_server/?st=jabfsgyz&sh=385af765
+http://blog.teamtreehouse.com/create-ajax-contact-form 
+https://www.w3schools.com/jquery/ajax_get.asp
+ */
 const form = $("#userInput");
 const list = $("#output");
 
@@ -19,8 +27,7 @@ form.keypress(function(event){
     //Will see your message as You:
     list.append("<li class='list-group-item list-group-item'>"+"You : " + userInput + "</li>");
 
-    // GET/POST
-  //const queryParams = {"input" : userInput }
+ //get chat links with my main function in go for user handler i have /chat/
   $.get("/chat/", userPrompt)
         .done(responses => {
             const out = "<li class='list-group-item list-group-item-secondary' id='resp' >"+"ELiza : " + responses +  "</li>";
@@ -28,4 +35,11 @@ form.keypress(function(event){
                 list.append(out)
             }, 1000);
         })
+
+        //function to help scroll but does not work
+        function scrollToBottom () {
+            document.body.scrollTop = document.body.scrollHeight;
+         }
 });
+
+
