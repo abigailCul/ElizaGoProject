@@ -1,6 +1,9 @@
 # ElizaGoProject
 A go project for my third year project in Data Representation and Querying, using eliza chatbot. This project is a messenger chatbot that you can talk to and she will respond to you. The project is done using GoLang and made into a web browser using html to serve the go file. Once you send your message Eliza will respond after a second and the page wont refresh as i have used Ajax in my project
 
+## Description
+My Eliza chatbot once run in the browser comes up as a messenget page. The message is send using the return key and is sent from there to the list shown as You:, Eliza will then respond under Eliza:. If you use a word that she recognises she will have certain responses for that word, otherwise her responses will be random. 
+
 ## Prerequisites
 
 I used github for my project so it would not be lost and be easy for other people to access.
@@ -45,7 +48,7 @@ $.get("/chat/", userPrompt)
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the Apache License- see the LICENSE.md file for details
 
   
 
